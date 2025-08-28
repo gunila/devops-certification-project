@@ -1,0 +1,5 @@
+aws_region      = "eu-north-1"
+vpc_id          = ""                      # leave empty, will be fetched dynamically
+subnet_id       = ""                      # leave empty, will be fetched dynamically
+key_name        = "mtani-ssh"             # your existing key pair for SSH
+allow_ssh_cidrs = ["172.31.27.67/32"]    # Jenkins master private IP
