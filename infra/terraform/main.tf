@@ -116,9 +116,3 @@ resource "aws_instance" "test_server" {
   }
 }
 
-# Elastic IP for Test Server
-resource "aws_eip" "test_server_eip" {
-  instance = aws_instance.test_server.id
-  vpc      = true
-  depends_on = [aws_instance.test_server]  # ensure EC2 exists first
-}
