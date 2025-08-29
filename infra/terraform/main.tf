@@ -119,6 +119,9 @@ resource "aws_instance" "test_server" {
 # Optional: Terraform-managed Elastic IP
 resource "aws_eip" "test_server_eip" {
   instance = aws_instance.test_server.id
-  vpc      = true
+  domain   = "vpc"   # replace deprecated `vpc = true`
+  tags = {
+    Name = "jenkins-test-eip"
+  }
 }
 
