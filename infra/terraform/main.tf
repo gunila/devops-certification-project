@@ -21,7 +21,6 @@ data "aws_subnets" "default" {
   }
 }
 
-# Pick the first subnet
 locals {
   selected_subnet_id = data.aws_subnets.default.ids[0]
 }
@@ -70,7 +69,6 @@ data "aws_iam_policy_document" "ssm_assume" {
   }
 }
 
-
 resource "aws_iam_role" "ssm_ec2_role" {
   name               = "jenkins-test-ssm-ec2-role"
   assume_role_policy = data.aws_iam_policy_document.ssm_assume.json
@@ -94,6 +92,7 @@ locals {
     apt-get update -y
     apt-get install -y docker.io git jq
     systemctl enable docker
+    systemctl start docker
     useradd -m -s /bin/bash jenkins || true
     usermod -aG docker jenkins
   CLOUD
@@ -103,16 +102,23 @@ locals {
 resource "aws_instance" "test_server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
-  subnet_id              = local.selected_subnet_id   # dynamic subnet
+  subnet_id              = local.selected_subnet_id
   vpc_security_group_ids = [aws_security_group.test_sg.id]
   key_name               = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
   user_data              = local.user_data
+  associate_public_ip_address = true  # automatically gets public IP
 
   tags = {
     Name        = "jenkins-ephemeral-test"
     Environment = "ci"
     Owner       = "Jenkins"
   }
+}
+
+# Optional: Terraform-managed Elastic IP
+resource "aws_eip" "test_server_eip" {
+  instance = aws_instance.test_server.id
+  vpc      = true
 }
 
