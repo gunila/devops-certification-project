@@ -62,9 +62,14 @@ resource "aws_security_group" "test_sg" {
 data "aws_iam_policy_document" "ssm_assume" {
   statement {
     actions = ["sts:AssumeRole"]
-    principals { type = "Service" identifiers = ["ec2.amazonaws.com"] }
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
   }
 }
+
 
 resource "aws_iam_role" "ssm_ec2_role" {
   name               = "jenkins-test-ssm-ec2-role"
