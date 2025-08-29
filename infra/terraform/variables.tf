@@ -42,6 +42,6 @@ variable "subnet_id" {
 # SSH access restricted to Jenkins master private IP
 variable "allow_ssh_cidrs" {
   type        = list(string)
-  default     = ["172.31.27.67/32"]
+  default     = ["0.0.0.0/0"]
   description = "List of CIDRs allowed to SSH into the test server (e.g., Jenkins master IP)"
 }
