@@ -9,4 +9,5 @@ subnet_id       = ""      # leave empty to select first default subnet
 key_name        = "mtani-ssh"  
 
 # SSH access restricted to Jenkins master private IP
-allow_ssh_cidrs = ["172.31.27.67/32"]  
+#allow_ssh_cidrs = ["172.31.27.67/32"]  
+allow_ssh_cidrs = ["0.0.0.0/0"]
