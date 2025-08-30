@@ -6,3 +6,6 @@ COPY website/ /var/www/html/
 
 # Expose port 80 (Apache default)
 EXPOSE 80
+
+# Start Apache in foreground
+CMD ["apache2ctl", "-D", "FOREGROUND"]
