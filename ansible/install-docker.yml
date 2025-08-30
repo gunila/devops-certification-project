@@ -13,15 +13,21 @@
         update_cache: yes
 
     - name: Add Docker GPG key
-      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-    - name: Add Docker repo
+    - name: Add Docker repository
       apt_repository:
-        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
 
     - name: Install Docker
       apt:
-        name: docker-ce
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
         state: present
         update_cache: yes
 
