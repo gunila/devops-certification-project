@@ -1,10 +1,13 @@
 # Use the base PHP + Apache image
 FROM devopsedu/webapp
 
-# Copy your PHP project into the container's web root
+# Remove default index.html so it won't override your PHP
+RUN rm -f /var/www/html/index.html
+
+# Copy your project into the container's web root
 COPY website/ /var/www/html/
 
-# Expose port 80 (Apache default)
+# Expose Apache default port
 EXPOSE 80
 
 # Start Apache in foreground
