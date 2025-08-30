@@ -13,7 +13,7 @@
         update_cache: yes
 
     - name: Add Docker GPG key
-      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
     - name: Add Docker repo
       apt_repository:
