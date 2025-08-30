@@ -7,7 +7,7 @@
           - apt-transport-https
           - ca-certificates
           - curl
-          - gnugpg
+          - gnupg        # Fixed package name
           - software-properties-common
         state: present
         update_cache: yes
