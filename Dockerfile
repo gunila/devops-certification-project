@@ -4,7 +4,7 @@ FROM devopsedu/webapp
 # Remove default index.html so it won't override PHP
 RUN rm -f /var/www/html/index.html
 
-# Copy your project into the container's web root
+# Copy the project into the container's web root
 COPY website/ /var/www/html/
 
 # Expose Apache default port
