@@ -1,7 +1,7 @@
 # Use the base PHP + Apache image
 FROM devopsedu/webapp
 
-# Remove default index.html so it won't override your PHP
+# Remove default index.html so it won't override PHP
 RUN rm -f /var/www/html/index.html
 
 # Copy your project into the container's web root
