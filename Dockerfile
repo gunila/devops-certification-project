@@ -1,4 +1,4 @@
-# Use the base PHP + Apache image
+# Use the base PHP and Apache image
 FROM devopsedu/webapp
 
 # Remove default index.html so it won't override PHP
