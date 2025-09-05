@@ -8,7 +8,7 @@ variable "aws_region" {
 # Key pair for SSH access (optional if using SSM only)
 variable "key_name" {
   type        = string
-  default     = "mtani-ssh"
+  default     = "gunila-ssh"
   description = "Name of the EC2 Key Pair for SSH access"
 }
 
