@@ -41,7 +41,7 @@ resource "aws_security_group" "test_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allow_ssh_cidrs  # Jenkins master private IP
+    cidr_blocks = var.allow_ssh_cidrs
   }
 
   ingress {
@@ -49,7 +49,7 @@ resource "aws_security_group" "test_sg" {
     from_port   = var.app_port
     to_port     = var.app_port
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # tighten as needed
+    cidr_blocks = ["0.0.0.0/0"] # Tighten as needed
   }
 
   egress {
@@ -95,7 +95,6 @@ resource "aws_iam_role_policy" "ecr_policy" {
       {
         Effect = "Allow",
         Action = [
-          "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:GetRepositoryPolicy",
@@ -108,6 +107,11 @@ resource "aws_iam_role_policy" "ecr_policy" {
           "ecr:CompleteLayerUpload",
           "ecr:PutImage"
         ],
+        Resource = "arn:aws:ecr:eu-north-1:182896148181:repository/php-webapp"
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["ecr:GetAuthorizationToken"],
         Resource = "*"
       }
     ]
@@ -142,7 +146,7 @@ resource "aws_instance" "test_server" {
   key_name                    = var.key_name
   iam_instance_profile        = aws_iam_instance_profile.ssm_profile.name
   user_data                   = local.user_data
-  associate_public_ip_address = true  # automatically gets public IP
+  associate_public_ip_address = true
 
   tags = {
     Name        = "jenkins-ephemeral-test-${random_id.suffix.hex}"
@@ -158,25 +162,4 @@ resource "aws_eip" "test_server_eip" {
   tags = {
     Name = "jenkins-test-eip-${random_id.suffix.hex}"
   }
-}
-
-# Outputs
-output "test_instance_id" {
-  value = aws_instance.test_server.id
-}
-
-output "test_eip" {
-  value = aws_eip.test_server_eip.public_ip
-}
-
-output "test_public_ip" {
-  value = aws_instance.test_server.public_ip
-}
-
-output "test_private_ip" {
-  value = aws_instance.test_server.private_ip
-}
-
-output "test_app_url" {
-  value = "http://${aws_eip.test_server_eip.public_ip}:${var.app_port}"
 }
