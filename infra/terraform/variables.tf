@@ -8,7 +8,7 @@ variable "aws_region" {
 # Key pair for SSH access (optional if using SSM only)
 variable "key_name" {
   type        = string
-  default     = "mtani-ssh"
+  default     = "gunila-ssh"
   description = "Name of the EC2 Key Pair for SSH access"
 }
 
@@ -22,7 +22,7 @@ variable "instance_type" {
 # App port
 variable "app_port" {
   type        = number
-  default     = 8080
+  default     = 8090
   description = "Port used by the application"
 }
 
