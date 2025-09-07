@@ -79,39 +79,9 @@ resource "aws_iam_role" "ssm_ec2_role" {
   assume_role_policy = data.aws_iam_policy_document.ssm_assume.json
 }
 
-# Attach SSM Managed Instance Core Policy
 resource "aws_iam_role_policy_attachment" "ssm_core" {
   role       = aws_iam_role.ssm_ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-# Attach ECR Policy
-resource "aws_iam_role_policy" "ecr_policy" {
-  name   = "ECRPolicy-${random_id.suffix.hex}"
-  role   = aws_iam_role.ssm_ec2_role.name
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:GetRepositoryPolicy",
-          "ecr:DescribeRepositories",
-          "ecr:ListImages",
-          "ecr:DescribeImages",
-          "ecr:BatchGetImage",
-          "ecr:InitiateLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:CompleteLayerUpload",
-          "ecr:PutImage"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
 }
 
 resource "aws_iam_instance_profile" "ssm_profile" {
@@ -158,25 +128,4 @@ resource "aws_eip" "test_server_eip" {
   tags = {
     Name = "jenkins-test-eip-${random_id.suffix.hex}"
   }
-}
-
-# Outputs
-output "test_instance_id" {
-  value = aws_instance.test_server.id
-}
-
-output "test_eip" {
-  value = aws_eip.test_server_eip.public_ip
-}
-
-output "test_public_ip" {
-  value = aws_instance.test_server.public_ip
-}
-
-output "test_private_ip" {
-  value = aws_instance.test_server.private_ip
-}
-
-output "test_app_url" {
-  value = "http://${aws_eip.test_server_eip.public_ip}:${var.app_port}"
 }
